@@ -35,6 +35,17 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
     private ConnectionCallback mConnectionCallback;
 
     /**
+     * Eric added this constructor to control warmup
+     */
+
+    // default to yes warmup
+    private boolean shouldWarmup = true;
+
+    public CustomTabActivityHelper(boolean shouldWarmup) {
+        this.shouldWarmup = shouldWarmup;
+    }
+
+    /**
      * Opens the URL on a Custom Tab if possible. Otherwise fallsback to opening it on a WebView.
      *
      * @param activity The host activity.
@@ -123,7 +134,9 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
     @Override
     public void onServiceConnected(CustomTabsClient client) {
         mClient = client;
-        mClient.warmup(0L);
+        if (shouldWarmup) {
+            mClient.warmup(0L);
+        }
         if (mConnectionCallback != null) mConnectionCallback.onCustomTabsConnected();
     }
 

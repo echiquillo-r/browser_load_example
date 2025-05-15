@@ -16,6 +16,7 @@ import com.example.browser_load_example.google_sample.CustomTabActivityHelper
 class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivity() {
     private var customTabActivityHelper: CustomTabActivityHelper? = null
     private var connectedIndicator: View? = null
+    private var url: String = "https://www.redditforbusiness.com/advertise/ad-types/mobile-ads-on-reddit/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +28,14 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
             insets
         }
 
-        val url = intent.getStringExtra(EXTRA_URL_TO_USE) ?: "https://www.redditforbusiness.com/advertise/ad-types/mobile-ads-on-reddit/"
+        intent.getStringExtra(EXTRA_URL_TO_USE)?.let {
+            url = it
+        } ?: run {
+            Log.d("MainActivity", "No URL provided, using default URL")
+        }
 
-        customTabActivityHelper = CustomTabActivityHelper().also {
+        // always warmup for now
+        customTabActivityHelper = CustomTabActivityHelper(true).also {
             it.setConnectionCallback(this)
         }
 
@@ -53,6 +59,10 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
 
     override fun onCustomTabsConnected() {
         connectedIndicator?.visibility = View.VISIBLE
+        // upon connection prewarm url
+        customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null).also {
+            Log.d("MainActivity", "mayLaunchUrl was successful: $it")
+        }
     }
 
     override fun onCustomTabsDisconnected() {
