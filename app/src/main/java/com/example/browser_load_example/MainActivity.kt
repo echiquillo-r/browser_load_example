@@ -35,7 +35,11 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
         }
 
         // always warmup for now
-        customTabActivityHelper = CustomTabActivityHelper(true).also {
+        val shouldWarmup = intent.getBooleanExtra(
+            EXTRA_SHOULD_WARMUP,
+            true
+        )
+        customTabActivityHelper = CustomTabActivityHelper(shouldWarmup).also {
             it.setConnectionCallback(this)
         }
 
@@ -59,9 +63,11 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
 
     override fun onCustomTabsConnected() {
         connectedIndicator?.visibility = View.VISIBLE
-        // upon connection prewarm url
-        customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null).also {
-            Log.d("MainActivity", "mayLaunchUrl was successful: $it")
+        // upon connection check if should prewarm url
+        if (intent.getBooleanExtra(EXTRA_SHOULD_PREWARM_URL, true)) {
+            customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null).also {
+                Log.d("MainActivity", "mayLaunchUrl was successful: $it")
+            }
         }
     }
 
@@ -93,5 +99,7 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
 
     companion object {
         const val EXTRA_URL_TO_USE = "extra_url_to_use"
+        const val EXTRA_SHOULD_WARMUP = "extra_should_warmup"
+        const val EXTRA_SHOULD_PREWARM_URL = "extra_should_prewarm_url"
     }
 }
