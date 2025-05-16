@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsServiceConnection;
@@ -86,13 +87,14 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
     /**
      * Creates or retrieves an exiting CustomTabsSession.
      *
+     * ERIC ADDED: Adding callback to the session
      * @return a CustomTabsSession.
      */
-    public CustomTabsSession getSession() {
+    public CustomTabsSession getSession(CustomTabsCallback callback) {
         if (mClient == null) {
             mCustomTabsSession = null;
         } else if (mCustomTabsSession == null) {
-            mCustomTabsSession = mClient.newSession(null);
+            mCustomTabsSession = mClient.newSession(callback);
         }
         return mCustomTabsSession;
     }
@@ -120,12 +122,14 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
 
     /**
      * @see {@link CustomTabsSession#mayLaunchUrl(Uri, Bundle, List)}.
+     *
+     * // ERIC ADDED: Adding callback when we get the session
      * @return true if call to mayLaunchUrl was accepted.
      */
-    public boolean mayLaunchUrl(Uri uri, Bundle extras, List<Bundle> otherLikelyBundles) {
+    public boolean mayLaunchUrl(Uri uri, Bundle extras, List<Bundle> otherLikelyBundles, CustomTabsCallback callback) {
         if (mClient == null) return false;
 
-        CustomTabsSession session = getSession();
+        CustomTabsSession session = getSession(callback);
         if (session == null) return false;
 
         return session.mayLaunchUrl(uri, extras, otherLikelyBundles);

@@ -12,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.browser_load_example.google_sample.CustomTabActivityHelper
+import com.example.browser_load_example.google_sample.CustomTabsHelper
 
 
 class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivity() {
@@ -69,7 +70,7 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
         connectedIndicator?.visibility = View.VISIBLE
         // upon connection check if should prewarm url
         if (intent.getBooleanExtra(EXTRA_SHOULD_PREWARM_URL, true)) {
-            customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null).also {
+            customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null, SessionHolder.mCustomTabsCallback).also {
                 Log.d("MainActivity", "mayLaunchUrl was successful: $it")
             }
         }
@@ -94,7 +95,7 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
     private fun openCustomTab(url: String) {
         val uri = url.toUri()
         val customTabsIntent =
-            CustomTabsIntent.Builder(customTabActivityHelper!!.session)
+            CustomTabsIntent.Builder(customTabActivityHelper?.getSession(SessionHolder.mCustomTabsCallback))
                 .build()
         CustomTabActivityHelper.openCustomTab(
             this, customTabsIntent, uri, NoOpWebviewFallback()
