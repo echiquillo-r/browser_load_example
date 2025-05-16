@@ -1,5 +1,6 @@
 package com.example.browser_load_example
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -47,7 +48,10 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
 
 
         findViewById<Button>(R.id.open_web_view).setOnClickListener {
-           // todo
+            val intent = Intent(this, WebViewActivity::class.java)
+            intent.putExtra(WebViewActivity.EXTRA_URL_TO_USE, url)
+            SessionHolder.startTimer()
+            startActivity(intent)
         }
         findViewById<Button>(R.id.open_chrome_custom_tab).setOnClickListener {
             SessionHolder.startTimer()
