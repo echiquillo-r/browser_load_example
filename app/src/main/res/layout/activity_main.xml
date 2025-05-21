@@ -16,12 +16,13 @@
             android:id="@+id/connected_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="If Green box is showing, then connected: " />
-        <View
+            android:text="If checked, then connected: " />
+        <CheckBox
             android:id="@+id/connected_indicator"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:visibility="gone"
+            android:checked="false"
             android:background="@android:color/holo_green_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -17,8 +18,8 @@ import com.example.browser_load_example.google_sample.CustomTabsHelper
 
 class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivity() {
     private var customTabActivityHelper: CustomTabActivityHelper? = null
-    private var connectedIndicator: View? = null
-    private var url: String = "https://www.redditforbusiness.com/advertise/ad-types/mobile-ads-on-reddit/"
+    private var connectedIndicator: CheckBox? = null
+    private var url: String = "https://www.americanexpress.com/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +68,14 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
     }
 
     override fun onCustomTabsConnected() {
-        connectedIndicator?.visibility = View.VISIBLE
         // upon connection check if should prewarm url
         if (intent.getBooleanExtra(EXTRA_SHOULD_PREWARM_URL, true)) {
             customTabActivityHelper?.mayLaunchUrl(url.toUri(), null, null, SessionHolder.mCustomTabsCallback).also {
                 Log.d("MainActivity", "mayLaunchUrl was successful: $it")
             }
         }
+        connectedIndicator?.visibility = View.VISIBLE
+        connectedIndicator?.isChecked = true
     }
 
     override fun onCustomTabsDisconnected() {

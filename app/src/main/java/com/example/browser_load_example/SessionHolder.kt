@@ -9,9 +9,7 @@ import androidx.browser.customtabs.CustomTabsSession
 
 object SessionHolder {
     var currentClickTime = 0L
-    var mSession: CustomTabsSession? = null
     var timings: MutableList<Long> = mutableListOf()
-    var customUrlToUse: String? = null
     val mCustomTabsCallback: CustomTabsCallback = object : CustomTabsCallback() {
         override fun onNavigationEvent(navigationEvent: Int, extras: Bundle?) {
             val event = when (navigationEvent) {

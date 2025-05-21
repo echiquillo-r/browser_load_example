@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Browser_Load_Example"
 include ':app'
+include ':benchmark'
