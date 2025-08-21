@@ -18,12 +18,16 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.OptIn;
 import androidx.browser.customtabs.CustomTabsCallback;
 import androidx.browser.customtabs.CustomTabsClient;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsServiceConnection;
 import androidx.browser.customtabs.CustomTabsSession;
+import androidx.browser.customtabs.ExperimentalPrefetch;
+import androidx.browser.customtabs.PrefetchOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,6 +137,24 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
         if (session == null) return false;
 
         return session.mayLaunchUrl(uri, extras, otherLikelyBundles);
+    }
+
+    @OptIn(markerClass = ExperimentalPrefetch.class)
+    public void prefetch(Uri uri) {
+        if (mClient == null) return;
+
+        CustomTabsSession session = getSession(null);
+        if (session == null) return;
+
+        List<Uri> uris = new ArrayList<Uri>() {{
+            add(uri);
+        }};
+
+        PrefetchOptions prefetchOptions = new PrefetchOptions.Builder()
+                .setRequiresAnonymousIpWhenCrossOrigin(true)
+                .build();
+
+        session.prefetch(uris, prefetchOptions);
     }
 
     @Override
