@@ -74,6 +74,12 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
                 Log.d("MainActivity", "mayLaunchUrl was successful: $it")
             }
         }
+
+        if (intent.getBooleanExtra(EXTRA_SHOULD_PREFETCH_URL, false)) {
+            //  warmup must be called first
+            customTabActivityHelper?.prefetch(url.toUri())
+        }
+
         connectedIndicator?.visibility = View.VISIBLE
         connectedIndicator?.isChecked = true
     }
@@ -108,5 +114,7 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
         const val EXTRA_URL_TO_USE = "extra_url_to_use"
         const val EXTRA_SHOULD_WARMUP = "extra_should_warmup"
         const val EXTRA_SHOULD_PREWARM_URL = "extra_should_prewarm_url"
+
+        const val EXTRA_SHOULD_PREFETCH_URL = "extra_should_prefetch_url"
     }
 }

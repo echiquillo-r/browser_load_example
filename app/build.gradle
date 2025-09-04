@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.browser_load_example'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.example.browser_load_example"
@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation ("androidx.webkit:webkit:1.8.0")
-    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'androidx.browser:browser:1.9.0'
     implementation "androidx.profileinstaller:profileinstaller:1.4.1"
 
     implementation libs.androidx.core.ktx
