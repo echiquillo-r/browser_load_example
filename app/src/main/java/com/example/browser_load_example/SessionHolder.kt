@@ -11,6 +11,28 @@ object SessionHolder {
     var currentClickTime = 0L
     var timings: MutableList<Long> = mutableListOf()
     val mCustomTabsCallback: CustomTabsCallback = object : CustomTabsCallback() {
+        
+        override fun extraCallback(callbackName: String, args: Bundle?) {
+            println("ChromeCustomTab: callbackName: $callbackName")
+            if (callbackName == "NavigationMetrics" && args != null) {
+                val firstContentfulPaint = args.getLong("firstContentfulPaint", -1L)
+                val navigationStart = args.getLong("navigationStart", -1L)
+
+                if (firstContentfulPaint > 0 && navigationStart > 0) {
+                    val fcpDuration = firstContentfulPaint - navigationStart
+                    println("ChromeCustomTab: First Contentful Paint after $fcpDuration ms")
+
+                    browserPageLoaded()
+                }
+                // Log all metrics for debugging
+                for (key in args.keySet()) {
+                    println("ChromeCustomTab: metric $key = ${args.get(key)}")
+                }
+            } else {
+                println("ChromeCustomTab: extraCallback: $callbackName (args=$args)")
+            }
+        }
+
         override fun onNavigationEvent(navigationEvent: Int, extras: Bundle?) {
             val event = when (navigationEvent) {
                 NAVIGATION_ABORTED -> "NAVIGATION_ABORTED"

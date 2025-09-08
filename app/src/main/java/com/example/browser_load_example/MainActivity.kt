@@ -106,7 +106,7 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
             CustomTabsIntent.Builder(customTabActivityHelper?.getSession(SessionHolder.mCustomTabsCallback))
                 .build()
         CustomTabActivityHelper.openCustomTab(
-            this, customTabsIntent, uri, NoOpWebviewFallback()
+            this, customTabsIntent, uri, NoOpWebviewFallback(), intent.getBooleanExtra(EXTRA_USE_CHROME_CANARY_EXTRA_CALLBACKS, false)
         )
     }
 
@@ -114,7 +114,8 @@ class MainActivity : CustomTabActivityHelper.ConnectionCallback, AppCompatActivi
         const val EXTRA_URL_TO_USE = "extra_url_to_use"
         const val EXTRA_SHOULD_WARMUP = "extra_should_warmup"
         const val EXTRA_SHOULD_PREWARM_URL = "extra_should_prewarm_url"
-
         const val EXTRA_SHOULD_PREFETCH_URL = "extra_should_prefetch_url"
+
+        const val EXTRA_USE_CHROME_CANARY_EXTRA_CALLBACKS = "extra_use_chrome_canary_extra_callabcks"
     }
 }

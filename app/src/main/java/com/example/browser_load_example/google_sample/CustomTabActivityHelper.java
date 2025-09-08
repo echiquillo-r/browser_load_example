@@ -61,8 +61,9 @@ public class CustomTabActivityHelper implements ServiceConnectionCallback {
     public static void openCustomTab(Activity activity,
                                      CustomTabsIntent customTabsIntent,
                                      Uri uri,
-                                     CustomTabFallback fallback) {
-        String packageName = CustomTabsHelper.getPackageNameToUse(activity);
+                                     CustomTabFallback fallback,
+                                     boolean useChromeCanary) {
+        String packageName = useChromeCanary ? CustomTabsHelper.CANARY_PACKAGE : CustomTabsHelper.getPackageNameToUse(activity);
 
         //If we cant find a package name, it means theres no browser that supports
         //Chrome Custom Tabs installed. So, we fallback to the webview
