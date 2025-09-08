@@ -35,6 +35,8 @@ public class CustomTabsHelper {
     static final String BETA_PACKAGE = "com.chrome.beta";
     static final String DEV_PACKAGE = "com.chrome.dev";
     static final String LOCAL_PACKAGE = "com.google.android.apps.chrome";
+    static final String CANARY_PACKAGE = "com.chrome.canary";
+
     private static final String EXTRA_CUSTOM_TABS_KEEP_ALIVE =
             "android.support.customtabs.extra.KEEP_ALIVE";
     private static final String ACTION_CUSTOM_TABS_CONNECTION =
@@ -130,6 +132,6 @@ public class CustomTabsHelper {
      * @return All possible chrome package names that provide custom tabs feature.
      */
     public static String[] getPackages() {
-        return new String[]{"", STABLE_PACKAGE, BETA_PACKAGE, DEV_PACKAGE, LOCAL_PACKAGE};
+        return new String[]{"", STABLE_PACKAGE, BETA_PACKAGE, DEV_PACKAGE, LOCAL_PACKAGE, CANARY_PACKAGE};
     }
 }
