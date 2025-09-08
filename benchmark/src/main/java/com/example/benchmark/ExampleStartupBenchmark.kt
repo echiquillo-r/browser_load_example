@@ -153,6 +153,35 @@ class ExampleStartupBenchmark {
     }
 
     @Test
+    fun webview_load_test_with_webview_client() {
+        var fileName = "webview_with_webview_client"
+        var testURLs = urlsToLoad.toMutableList()
+        benchmarkRule.measureRepeated(
+            packageName = PACKAGE_NAME,
+            metrics = listOf(StartupTimingMetric()),
+            iterations = DEFAULT_ITERATIONS,
+            startupMode = StartupMode.COLD,
+            setupBlock = {
+                instrumentationContext = InstrumentationRegistry.getInstrumentation().context
+                pressHome()
+            }
+        ) {
+            val intent = Intent("$PACKAGE_NAME.MAIN_ACTIVITY")
+            if (testURLs.isNotEmpty()) {
+                intent.putExtra("extra_url_to_use", testURLs.removeAt(0))
+            }
+            intent.putExtra("extra_should_use_webview_client", true)
+            startActivityAndWait(intent)
+            waitForServiceConnected() // Wait for the activity to be fully loaded
+            Thread.sleep(DEFAULT_WAIT_URL_WARM)
+            clickOnId("open_web_view")
+            Thread.sleep(DEFAULT_WAIT_URL_LOAD) // Wait for the web view to load
+            saveFile(fileName)
+            Thread.sleep(DEFAULT_WAIT_WRITE_TO_FILE) // Wait for the file to be saved
+        }
+    }
+
+    @Test
     fun chrome_customtab_load_test() {
         var fileName = "chrome_customtab"
         var testURLs = urlsToLoad.toMutableList()
